@@ -8,7 +8,7 @@ pip::
 	venv/bin/pip install -r requirements.dev.txt
 
 tests::
-	PYTHONPATH=. venv/bin/pytest -rP tests/ -vvv
+	PYTHONPATH=. venv/bin/pytest -rP tests/ -vvv --cov=data_flow --cov-report html --cov-report term
 
 lint::
 	venv/bin/flake8 data_flow/
