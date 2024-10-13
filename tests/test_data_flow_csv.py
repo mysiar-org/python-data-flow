@@ -6,29 +6,33 @@ from tests.SequenceTestCase import SequenceTestCase
 
 class DataFlowCSVTestCase(SequenceTestCase):
     def test_memory(self):
-        data = (
+        df = (
             DataFlow().DataFrame().from_csv("./tests/data/annual-enterprise-survey-2023-financial-year-provisional.csv")
         )
-        self._sequence(data=data)
+        df.to_csv(self.TEST_CSV_FILE)
 
-        data.to_csv(self.TEST_CSV_FILE)
-        data.get_data_pandas().equals(DataFlow().DataFrame().from_csv(self.TEST_CSV_FILE).get_data_pandas())
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
     def test_parquet(self):
-        data = (
+        df = (
             DataFlow()
             .DataFrame(in_memory=False)
             .from_csv("./tests/data/annual-enterprise-survey-2023-financial-year-provisional.csv")
         )
-        self._sequence(data=data)
+
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
     def test_feather(self):
-        data = (
+        df = (
             DataFlow()
             .DataFrame(in_memory=False, file_type=FileType.feather)
             .from_csv("./tests/data/annual-enterprise-survey-2023-financial-year-provisional.csv")
         )
-        self._sequence(data=data)
+
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
 
 if __name__ == "__main__":

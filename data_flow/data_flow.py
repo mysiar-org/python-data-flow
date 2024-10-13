@@ -3,6 +3,7 @@ import tempfile
 
 import fireducks.pandas as fd
 import pandas as pd
+import polars as pl
 from pyarrow import feather
 
 from data_flow.lib import FileType
@@ -44,17 +45,25 @@ class DataFlow:
             if not self.__in_memory:
                 delete_file(self.__filename)
 
-        def get_data_fireducks(self) -> fd.DataFrame:
+        def to_fireducks(self) -> fd.DataFrame:
             if self.__in_memory:
                 return self.__data
             else:
                 return df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type)
 
-        def get_data_pandas(self) -> pd.DataFrame:
+        def to_pandas(self) -> pd.DataFrame:
             if self.__in_memory:
                 return self.__data.to_pandas()
             else:
                 return df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
+
+        def to_polars(self) -> pl.DataFrame:
+            if self.__in_memory:
+                return pl.from_pandas(self.__data.to_pandas())
+            else:
+                return pl.from_pandas(
+                    df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
+                )
 
         def from_csv(self, filename: str):
             if self.__in_memory:

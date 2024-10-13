@@ -12,17 +12,22 @@ class DataFlowHdfTestCase(SequenceTestCase):
         DataFlow().DataFrame().from_csv(self.CSV_FILE).to_hdf(self.TEST_HDF_FILE)
 
     def test_memory(self):
-        data = DataFlow().DataFrame().from_hdf(self.TEST_HDF_FILE)
-        self._sequence(data=data)
-        data.get_data_pandas().equals(DataFlow().DataFrame().from_csv(self.CSV_FILE).get_data_pandas())
+        df = DataFlow().DataFrame().from_hdf(self.TEST_HDF_FILE)
+
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
     def test_parquet(self):
-        data = DataFlow().DataFrame(in_memory=False).from_hdf(self.TEST_HDF_FILE)
-        self._sequence(data=data)
+        df = DataFlow().DataFrame(in_memory=False).from_hdf(self.TEST_HDF_FILE)
+
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
     def test_feather(self):
-        data = DataFlow().DataFrame(in_memory=False, file_type=FileType.feather).from_hdf(self.TEST_HDF_FILE)
-        self._sequence(data=data)
+        df = DataFlow().DataFrame(in_memory=False, file_type=FileType.feather).from_hdf(self.TEST_HDF_FILE)
+
+        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+        self._sequence(data=df)
 
 
 if __name__ == "__main__":

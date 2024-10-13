@@ -19,6 +19,7 @@ class SequenceTestCase(BaseTestCase):
                 "Variable_category",
             ]
         )
+
         self.assertEqual(3, len(data.columns()))
         self.assertListEqual(["Year", "Units", "Value"], data.columns())
 
