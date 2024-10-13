@@ -1,4 +1,4 @@
-fireducks~=1.0.6
+fireducks
 tables
-pyarrow~=17.0.0
-pandas~=2.2.3
+pyarrow
+pandas
