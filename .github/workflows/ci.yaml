@@ -21,3 +21,5 @@ jobs:
         run: python -c "import sys; print(sys.version)"
       - name: Install modules
         run: pip install -r requirements.txt && pip install -r requirements.dev.txt
+      - name: Tests
+        run: PYTHONPATH=. pytest
