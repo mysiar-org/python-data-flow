@@ -10,7 +10,7 @@ class SequenceTestCase(BaseTestCase):
 
         self.assertEqual(10, len(data.columns()))
 
-        data.del_columns(
+        data.columns_delete(
             [
                 "Industry_aggregation_NZSIOC",
                 "Industry_code_NZSIOC",
@@ -25,10 +25,10 @@ class SequenceTestCase(BaseTestCase):
         self.assertEqual(3, len(data.columns()))
         self.assertListEqual(["Year", "Units", "Value"], data.columns())
 
-        data.rename_columns(columns_mapping={"Year": "_year_", "Units": "_units_"})
+        data.columns_rename(columns_mapping={"Year": "_year_", "Units": "_units_"})
         self.assertListEqual(["_year_", "_units_", "Value"], data.columns())
 
-        data.select_columns(columns=["_year_"])
+        data.columns_select(columns=["_year_"])
         self.assertListEqual(["_year_"], data.columns())
 
         self.assertPandasEqual(

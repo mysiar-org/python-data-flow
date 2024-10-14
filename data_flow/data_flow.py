@@ -157,7 +157,13 @@ class DataFlow:
                 to_hdf_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type, key=key)
             return self
 
-        def del_columns(self, columns: list):
+        def columns(self) -> list:
+            if self.__in_memory:
+                return self.__data.columns.to_list()
+            else:
+                return data_get_columns(tmp_filename=self.__filename, file_type=self.__file_type)
+
+        def columns_delete(self, columns: list):
             if self.__in_memory:
                 self.__data.drop(columns=columns, inplace=True)
             else:
@@ -165,13 +171,7 @@ class DataFlow:
 
             return self
 
-        def columns(self) -> list:
-            if self.__in_memory:
-                return self.__data.columns.to_list()
-            else:
-                return data_get_columns(tmp_filename=self.__filename, file_type=self.__file_type)
-
-        def rename_columns(self, columns_mapping: dict):
+        def columns_rename(self, columns_mapping: dict):
             if self.__in_memory:
                 self.__data.rename(columns=columns_mapping, inplace=True)
             else:
@@ -182,8 +182,13 @@ class DataFlow:
                 )
             return self
 
-        def select_columns(self, columns: list):
+        def columns_select(self, columns: list):
             if self.__in_memory:
                 self.__data = self.__data[columns]
             else:
                 data_select_columns(tmp_filename=self.__filename, file_type=self.__file_type, columns=columns)
+
+        # def filter_on_column(self, column: str, value: Any, operator: Operator):
+        #     if self.__in_memory:
+        #
+        #
