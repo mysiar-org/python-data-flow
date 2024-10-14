@@ -1,6 +1,7 @@
 import unittest
 
-from data_flow import DataFlow, FileType
+from data_flow import DataFlow
+from data_flow.lib import FileType
 from data_flow.lib.tools import delete_file
 from tests.SequenceTestCase import SequenceTestCase
 

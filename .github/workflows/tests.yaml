@@ -24,4 +24,4 @@ jobs:
       - name: Tests
         run: PYTHONPATH=. pytest --cov=data_flow --cov-report term
       - name: Lint
-        run: flake8 data_flow/
+        run: pflake8 data_flow/

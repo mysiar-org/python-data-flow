@@ -52,13 +52,3 @@ def from_hdf_2_file(filename: str, tmp_filename: str, file_type: FileType) -> No
             fd.read_hdf(filename).to_feather(tmp_filename)
         case _:
             raise ValueError(f"File type not implemented: {file_type} !")
-
-
-def df_from_tmp_filename(tmp_filename: str, file_type: FileType) -> fd.DataFrame:
-    match file_type:
-        case FileType.parquet:
-            return fd.read_parquet(tmp_filename)
-        case FileType.feather:
-            return fd.read_feather(tmp_filename)
-        case _:
-            raise ValueError(f"File type not implemented: {file_type} !")

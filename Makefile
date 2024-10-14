@@ -11,4 +11,4 @@ tests::
 	PYTHONPATH=. venv/bin/pytest --cov=data_flow --cov-report html --cov-report term -rP tests/ -vvv
 
 lint::
-	venv/bin/flake8 data_flow/
+	venv/bin/pflake8 data_flow/

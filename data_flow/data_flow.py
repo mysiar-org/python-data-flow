@@ -9,7 +9,6 @@ from pyarrow import feather
 from data_flow.lib import FileType
 from data_flow.lib.data_columns import data_get_columns, data_delete_columns, data_rename_columns, data_select_columns
 from data_flow.lib.data_from import (
-    df_from_tmp_filename,
     from_csv_2_file,
     from_feather_2_file,
     from_parquet_2_file,
@@ -23,6 +22,9 @@ from data_flow.lib.data_to import (
     to_json_from_file,
     to_hdf_from_file,
 )
+from data_flow.lib.fireducks import from_fireducks_2_file, to_fireducks_from_file
+from data_flow.lib.pandas import from_pandas_2_file
+from data_flow.lib.polars import from_polars_2_file, to_polars_from_file
 from data_flow.lib.tools import generate_temporary_filename, delete_file
 
 
@@ -45,25 +47,44 @@ class DataFlow:
             if not self.__in_memory:
                 delete_file(self.__filename)
 
+        def from_fireducks(self, df: fd.DataFrame):
+            if self.__in_memory:
+                self.__data = df
+            else:
+                from_fireducks_2_file(df=df, tmp_filename=self.__filename, file_type=self.__file_type)
+            return self
+
         def to_fireducks(self) -> fd.DataFrame:
             if self.__in_memory:
                 return self.__data
             else:
-                return df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type)
+                return to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
+
+        def from_pandas(self, df: pd.DataFrame):
+            if self.__in_memory:
+                self.__data = fd.from_pandas(df)
+            else:
+                from_pandas_2_file(df=df, tmp_filename=self.__filename, file_type=self.__file_type)
+            return self
 
         def to_pandas(self) -> pd.DataFrame:
             if self.__in_memory:
                 return self.__data.to_pandas()
             else:
-                return df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
+                return to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
+
+        def from_polars(self, df: pl.DataFrame):
+            if self.__in_memory:
+                self.__data = fd.from_pandas(df.to_pandas())
+            else:
+                from_polars_2_file(df=df, tmp_filename=self.__filename, file_type=self.__file_type)
+            return self
 
         def to_polars(self) -> pl.DataFrame:
             if self.__in_memory:
                 return pl.from_pandas(self.__data.to_pandas())
             else:
-                return pl.from_pandas(
-                    df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
-                )
+                return to_polars_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
 
         def from_csv(self, filename: str):
             if self.__in_memory:
@@ -139,14 +160,14 @@ class DataFlow:
             if self.__in_memory:
                 print(self.__data.head())
             else:
-                print(df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type).head())
+                print(to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).head())
             return self
 
         def stats(self):
             if self.__in_memory:
                 data = self.__data
             else:
-                data = df_from_tmp_filename(tmp_filename=self.__filename, file_type=self.__file_type)
+                data = to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
 
             print("***** Data stats *****")
             print(f"Columns names : {data.columns.to_list()}")

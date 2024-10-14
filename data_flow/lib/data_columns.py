@@ -45,13 +45,5 @@ def data_select_columns(tmp_filename: str, file_type: FileType, columns: list) -
         case FileType.feather:
             data = fd.read_feather(tmp_filename)[columns]
             data.to_feather(tmp_filename)
-
         case _:
             raise ValueError(f"File type not implemented: {file_type} !")
-
-
-# def __slice(dataframe, start_row, end_row, start_col, end_col):
-#     assert len(dataframe) > end_row and start_row >= 0
-#     assert len(dataframe.columns) > end_col and start_col >= 0
-#     list_of_indexes = list(dataframe.columns)[start_col:end_col]
-#     return dataframe.iloc[start_row:end_row][list_of_indexes]
