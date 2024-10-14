@@ -14,17 +14,17 @@ class DataFlowJsonTestCase(SequenceTestCase):
 
     def test_memory(self):
         df = DataFlow().DataFrame().from_json(self.TEST_JSON_FILE)
-        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+
         self._sequence(data=df)
 
     def test_parquet(self):
         df = DataFlow().DataFrame(in_memory=False).from_json(self.TEST_JSON_FILE)
-        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+
         self._sequence(data=df)
 
     def test_feather(self):
         df = DataFlow().DataFrame(in_memory=False, file_type=FileType.feather).from_json(self.TEST_JSON_FILE)
-        self.assertPandasEqual(df.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+
         self._sequence(data=df)
 
 

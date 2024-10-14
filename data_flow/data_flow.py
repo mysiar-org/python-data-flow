@@ -24,7 +24,6 @@ from data_flow.lib.data_to import (
 )
 from data_flow.lib.fireducks import from_fireducks_2_file, to_fireducks_from_file
 from data_flow.lib.pandas import from_pandas_2_file
-from data_flow.lib.polars import from_polars_2_file, to_polars_from_file
 from data_flow.lib.tools import generate_temporary_filename, delete_file
 
 
@@ -77,14 +76,16 @@ class DataFlow:
             if self.__in_memory:
                 self.__data = fd.from_pandas(df.to_pandas())
             else:
-                from_polars_2_file(df=df, tmp_filename=self.__filename, file_type=self.__file_type)
+                from_pandas_2_file(df=df.to_pandas(), tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
         def to_polars(self) -> pl.DataFrame:
             if self.__in_memory:
                 return pl.from_pandas(self.__data.to_pandas())
             else:
-                return to_polars_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
+                return pl.from_pandas(
+                    to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
+                )
 
         def from_csv(self, filename: str):
             if self.__in_memory:
@@ -154,28 +155,6 @@ class DataFlow:
                 self.__data.to_hdf(path_or_buf=filename, key=key)
             else:
                 to_hdf_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type, key=key)
-            return self
-
-        def head(self):
-            if self.__in_memory:
-                print(self.__data.head())
-            else:
-                print(to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).head())
-            return self
-
-        def stats(self):
-            if self.__in_memory:
-                data = self.__data
-            else:
-                data = to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
-
-            print("***** Data stats *****")
-            print(f"Columns names : {data.columns.to_list()}")
-            print(f"Columns count : {len(data.columns)}")
-            print(f"Rows count    :    {len(data)}")
-            print("Data types    :")
-            print(data.dtypes)
-            print("**********************")
             return self
 
         def del_columns(self, columns: list):

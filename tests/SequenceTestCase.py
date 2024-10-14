@@ -4,6 +4,8 @@ from tests.BaseTestCase import BaseTestCase
 
 class SequenceTestCase(BaseTestCase):
     def _sequence(self, data: DataFlow.DataFrame) -> None:
+        self.assertPandasEqual(data.to_pandas(), DataFlow().DataFrame().from_csv(self.CSV_FILE).to_pandas())
+
         polars = data.to_polars()
 
         self.assertEqual(10, len(data.columns()))
