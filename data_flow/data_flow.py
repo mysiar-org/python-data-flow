@@ -1,13 +1,20 @@
 import os
 import tempfile
+from typing import Any
 
 import fireducks.pandas as fd
 import pandas as pd
 import polars as pl
 from pyarrow import feather
 
-from data_flow.lib import FileType
-from data_flow.lib.data_columns import data_get_columns, data_delete_columns, data_rename_columns, data_select_columns
+from data_flow.lib import FileType, Operator
+from data_flow.lib.data_columns import (
+    data_get_columns,
+    data_delete_columns,
+    data_rename_columns,
+    data_select_columns,
+    data_filter_on_column,
+)
 from data_flow.lib.data_from import (
     from_csv_2_file,
     from_feather_2_file,
@@ -188,7 +195,26 @@ class DataFlow:
             else:
                 data_select_columns(tmp_filename=self.__filename, file_type=self.__file_type, columns=columns)
 
-        # def filter_on_column(self, column: str, value: Any, operator: Operator):
-        #     if self.__in_memory:
-        #
-        #
+        def filter_on_column(self, column: str, value: Any, operator: Operator):
+            if self.__in_memory:
+                match operator:
+                    case Operator.Eq:
+                        self.__data = self.__data[self.__data[column] == value]
+                    case Operator.Gte:
+                        self.__data = self.__data[self.__data[column] >= value]
+                    case Operator.Lte:
+                        self.__data = self.__data[self.__data[column] <= value]
+                    case Operator.Gt:
+                        self.__data = self.__data[self.__data[column] > value]
+                    case Operator.Lt:
+                        self.__data = self.__data[self.__data[column] < value]
+                    case Operator.Ne:
+                        self.__data = self.__data[self.__data[column] != value]
+            else:
+                data_filter_on_column(
+                    tmp_filename=self.__filename,
+                    file_type=self.__file_type,
+                    column=column,
+                    value=value,
+                    operator=operator,
+                )

@@ -1,6 +1,9 @@
+from typing import Any
+
 import fireducks.pandas as fd
 
 from data_flow.lib.FileType import FileType
+from data_flow.lib.Operator import Operator
 
 
 def data_get_columns(tmp_filename: str, file_type: FileType) -> list:
@@ -47,3 +50,33 @@ def data_select_columns(tmp_filename: str, file_type: FileType, columns: list) -
             data.to_feather(tmp_filename)
         case _:
             raise ValueError(f"File type not implemented: {file_type} !")
+
+
+def data_filter_on_column(tmp_filename: str, file_type: FileType, column: str, value: Any, operator: Operator) -> None:
+    match file_type:
+        case FileType.parquet:
+            data = fd.read_parquet(tmp_filename)
+        case FileType.feather:
+            data = fd.read_feather(tmp_filename)
+        case _:
+            raise ValueError(f"File type not implemented: {file_type} !")
+
+    match operator:
+        case Operator.Eq:
+            data = data[data[column] == value]
+        case Operator.Gte:
+            data = data[data[column] >= value]
+        case Operator.Lte:
+            data = data[data[column] <= value]
+        case Operator.Gt:
+            data = data[data[column] > value]
+        case Operator.Lt:
+            data = data[data[column] < value]
+        case Operator.Ne:
+            data = data[data[column] != value]
+
+    match file_type:
+        case FileType.parquet:
+            data.to_parquet(tmp_filename)
+        case FileType.feather:
+            data.to_feather(tmp_filename)
