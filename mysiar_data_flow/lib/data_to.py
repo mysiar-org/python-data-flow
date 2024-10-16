@@ -1,6 +1,6 @@
 import fireducks.pandas as fd
 
-from data_flow.lib.FileType import FileType
+from mysiar_data_flow.lib.FileType import FileType
 
 
 def to_csv_from_file(filename: str, tmp_filename: str, file_type: FileType) -> None:

@@ -2,8 +2,8 @@ from typing import Any
 
 import fireducks.pandas as fd
 
-from data_flow.lib.FileType import FileType
-from data_flow.lib.Operator import Operator
+from mysiar_data_flow.lib.FileType import FileType
+from mysiar_data_flow.lib.Operator import Operator
 
 
 def data_get_columns(tmp_filename: str, file_type: FileType) -> list:

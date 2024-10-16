@@ -1,7 +1,7 @@
 import fireducks.pandas as fd
 from pyarrow import feather
 
-from data_flow.lib.FileType import FileType
+from mysiar_data_flow.lib.FileType import FileType
 
 
 def from_csv_2_file(filename: str, tmp_filename: str, file_type: FileType) -> None:

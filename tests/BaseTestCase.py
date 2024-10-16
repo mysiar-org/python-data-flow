@@ -4,8 +4,8 @@ from zipfile import ZipFile
 
 import pandas as pd
 
-from data_flow import DataFlow
-from data_flow.lib import Operator
+from mysiar_data_flow import DataFlow
+from mysiar_data_flow.lib import Operator
 
 
 class BaseTestCase(unittest.TestCase):

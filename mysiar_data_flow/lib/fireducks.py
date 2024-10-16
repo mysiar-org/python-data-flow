@@ -1,6 +1,6 @@
 import fireducks.pandas as fd
 
-from data_flow.lib.FileType import FileType
+from mysiar_data_flow.lib.FileType import FileType
 
 
 def from_fireducks_2_file(df: fd.DataFrame, tmp_filename: str, file_type: FileType) -> None:

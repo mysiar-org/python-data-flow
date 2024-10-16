@@ -8,5 +8,17 @@
 
 library to manipulate data
 
+## Installation instructions
+
+```sh
+pip install mysiar-data-flow
+```
+
 ## DataFlow.DataFrame
-work in progress
+
+### Usage
+For now check  [mysiar_data_flow/data_flow.py](mysiar_data_flow/data_flow.py) file for interface
+
+
+
+![work in progress](.github/5578703.png)

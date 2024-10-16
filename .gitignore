@@ -162,5 +162,5 @@ cython_debug/
 
 
 # data_flow
-!data_flow/lib
+!mysiar_data_flow/lib
 tests/data/*.csv

@@ -1,8 +1,8 @@
 import unittest
 
-from data_flow import DataFlow
-from data_flow.lib import FileType
-from data_flow.lib.tools import delete_file
+from mysiar_data_flow import DataFlow
+from mysiar_data_flow.lib import FileType
+from mysiar_data_flow.lib.tools import delete_file
 from tests.BaseTestCase import BaseTestCase
 
 

@@ -7,31 +7,31 @@ import pandas as pd
 import polars as pl
 from pyarrow import feather
 
-from data_flow.lib import FileType, Operator
-from data_flow.lib.data_columns import (
+from mysiar_data_flow.lib import FileType, Operator
+from mysiar_data_flow.lib.data_columns import (
     data_get_columns,
     data_delete_columns,
     data_rename_columns,
     data_select_columns,
     data_filter_on_column,
 )
-from data_flow.lib.data_from import (
+from mysiar_data_flow.lib.data_from import (
     from_csv_2_file,
     from_feather_2_file,
     from_parquet_2_file,
     from_json_2_file,
     from_hdf_2_file,
 )
-from data_flow.lib.data_to import (
+from mysiar_data_flow.lib.data_to import (
     to_csv_from_file,
     to_feather_from_file,
     to_parquet_from_file,
     to_json_from_file,
     to_hdf_from_file,
 )
-from data_flow.lib.fireducks import from_fireducks_2_file, to_fireducks_from_file
-from data_flow.lib.pandas import from_pandas_2_file
-from data_flow.lib.tools import generate_temporary_filename, delete_file
+from mysiar_data_flow.lib.fireducks import from_fireducks_2_file, to_fireducks_from_file
+from mysiar_data_flow.lib.pandas import from_pandas_2_file
+from mysiar_data_flow.lib.tools import generate_temporary_filename, delete_file
 
 
 class DataFlow:
