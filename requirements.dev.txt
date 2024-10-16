@@ -1,0 +1,7 @@
+black
+flake8
+pyproject-flake8
+pytest
+pytest-cov
+poetry
+twine
