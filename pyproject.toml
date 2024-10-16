@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mysiar-data-flow"
-version = "0.0.1rc2"
+version = "0.0.1"
 readme = "README.md"
 description = "Python data manipulation library"
 authors = ["Piotr Synowiec <psynowiec@gmail.com>"]
