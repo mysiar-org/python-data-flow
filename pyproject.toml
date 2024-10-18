@@ -1,6 +1,8 @@
+[project]
+license = {file = "LICENSE"}
 [tool.poetry]
 name = "mysiar-data-flow"
-version = "0.0.1"
+version = "0.0.2rc1"
 readme = "README.md"
 description = "Python data manipulation library"
 authors = ["Piotr Synowiec <psynowiec@gmail.com>"]
@@ -13,7 +15,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
-    "Topic :: Utilities"
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
 ]
 
 [tool.poetry.dependencies]
