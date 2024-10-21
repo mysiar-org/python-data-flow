@@ -25,3 +25,6 @@ upload-test::
 upload::
 	$(MAKE) build
 	. venv/bin/activate && python -m twine upload -u $${PYPI_USER} -p $${PYPI_PASS} --verbose dist/*
+
+docs::
+	venv/bin/pdoc  mysiar_data_flow/ -o docs/

@@ -53,7 +53,7 @@ class DataFlow:
             if not self.__in_memory:
                 delete_file(self.__filename)
 
-        def from_fireducks(self, df: fd.DataFrame):
+        def from_fireducks(self, df: fd.DataFrame) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = df
             else:
@@ -66,7 +66,7 @@ class DataFlow:
             else:
                 return to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type)
 
-        def from_pandas(self, df: pd.DataFrame):
+        def from_pandas(self, df: pd.DataFrame) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.from_pandas(df)
             else:
@@ -79,7 +79,7 @@ class DataFlow:
             else:
                 return to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
 
-        def from_polars(self, df: pl.DataFrame):
+        def from_polars(self, df: pl.DataFrame) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.from_pandas(df.to_pandas())
             else:
@@ -94,70 +94,70 @@ class DataFlow:
                     to_fireducks_from_file(tmp_filename=self.__filename, file_type=self.__file_type).to_pandas()
                 )
 
-        def from_csv(self, filename: str):
+        def from_csv(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.read_csv(filename)
             else:
                 from_csv_2_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def to_csv(self, filename: str, index=False):
+        def to_csv(self, filename: str, index=False) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.to_csv(filename, index=index)
             else:
                 to_csv_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def from_feather(self, filename: str):
+        def from_feather(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.from_pandas(feather.read_feather(filename))
             else:
                 from_feather_2_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def to_feather(self, filename: str):
+        def to_feather(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.to_feather(filename)
             else:
                 to_feather_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def from_parquet(self, filename: str):
+        def from_parquet(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.read_parquet(filename)
             else:
                 from_parquet_2_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def to_parquet(self, filename: str):
+        def to_parquet(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.to_parquet(filename)
             else:
                 to_parquet_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def from_json(self, filename: str):
+        def from_json(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.read_json(filename)
             else:
                 from_json_2_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def to_json(self, filename: str):
+        def to_json(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.to_json(filename)
             else:
                 to_json_from_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def from_hdf(self, filename: str):
+        def from_hdf(self, filename: str) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data = fd.read_hdf(filename)
             else:
                 from_hdf_2_file(filename=filename, tmp_filename=self.__filename, file_type=self.__file_type)
             return self
 
-        def to_hdf(self, filename: str, key: str = "key"):
+        def to_hdf(self, filename: str, key: str = "key") -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.to_hdf(path_or_buf=filename, key=key)
             else:
@@ -165,12 +165,17 @@ class DataFlow:
             return self
 
         def columns(self) -> list:
+            """
+            lists columns in data frame
+
+            :return: list - list of columns in data frame
+            """
             if self.__in_memory:
                 return self.__data.columns.to_list()
             else:
                 return data_get_columns(tmp_filename=self.__filename, file_type=self.__file_type)
 
-        def columns_delete(self, columns: list):
+        def columns_delete(self, columns: list) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 self.__data.drop(columns=columns, inplace=True)
             else:
@@ -178,7 +183,13 @@ class DataFlow:
 
             return self
 
-        def columns_rename(self, columns_mapping: dict):
+        def columns_rename(self, columns_mapping: dict) -> "DataFlow.DataFrame":
+            """
+            rename columns
+
+            :param columns_mapping: dict - old_name: new_name pairs ex. {"Year": "year", "Units": "units"}
+            :return:
+            """
             if self.__in_memory:
                 self.__data.rename(columns=columns_mapping, inplace=True)
             else:
@@ -189,13 +200,19 @@ class DataFlow:
                 )
             return self
 
-        def columns_select(self, columns: list):
+        def columns_select(self, columns: list) -> "DataFlow.DataFrame":
+            """
+            columns select - columns to keep in data frame
+            :param columns:
+            :return:
+            """
             if self.__in_memory:
                 self.__data = self.__data[columns]
             else:
                 data_select_columns(tmp_filename=self.__filename, file_type=self.__file_type, columns=columns)
+            return self
 
-        def filter_on_column(self, column: str, value: Any, operator: Operator):
+        def filter_on_column(self, column: str, value: Any, operator: Operator) -> "DataFlow.DataFrame":
             if self.__in_memory:
                 match operator:
                     case Operator.Eq:
@@ -218,3 +235,4 @@ class DataFlow:
                     value=value,
                     operator=operator,
                 )
+            return self
