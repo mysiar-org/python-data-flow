@@ -2,7 +2,7 @@
 license = {file = "LICENSE"}
 [tool.poetry]
 name = "mysiar-data-flow"
-version = "0.0.2"
+version = "0.0.3rc2"
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/mysiar-org/python-data-flow"
@@ -45,9 +45,10 @@ poetry = "*"
 
 
 [project.urls]
-Repository = "https://github.com/mysiar-org/python-data-flow"
-Issues = "https://github.com/mysiar-org/python-data-flow/issues"
-#Changelog=
+documentation = "https://mysiar-org.github.io/mysiar-data-flow"
+repository = "https://github.com/mysiar-org/python-data-flow"
+issues = "https://github.com/mysiar-org/python-data-flow/issues"
+
 
 [tool.poetry.extras]
 all = [
