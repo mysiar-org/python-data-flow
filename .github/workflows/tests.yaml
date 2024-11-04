@@ -21,6 +21,6 @@ jobs:
       - name: Install modules
         run: pip install -r requirements.txt && pip install -r requirements.dev.txt
       - name: Tests
-        run: PYTHONPATH=. pytest --cov=data_flow --cov-report term
+        run: PYTHONPATH=. pytest --cov=mysiar_data_flow --cov-report term
       - name: Lint
         run: pflake8 mysiar_data_flow/ tests/
